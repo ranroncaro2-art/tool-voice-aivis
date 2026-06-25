@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller / Build
+build/
+dist/
+*.exe
+*.spec
+
+# Application generated output / temp merger cache
+output/
+queue_state.json
+
+# Local environment / IDE
+.vscode/
+.idea/
+.venv/
+venv/
+ENV/
+env/
