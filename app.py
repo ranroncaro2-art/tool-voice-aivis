@@ -1,3 +1,17 @@
+import sys
+
+# Provide dummy streams in frozen noconsole mode to avoid Uvicorn/logging isatty errors
+if getattr(sys, 'frozen', False):
+    class DummyStream:
+        def write(self, x):
+            pass
+        def flush(self):
+            pass
+        def isatty(self):
+            return False
+    sys.stdout = DummyStream()
+    sys.stderr = DummyStream()
+
 import gradio as gr
 import os
 import config
@@ -821,10 +835,19 @@ if __name__ == "__main__":
                 break
                 
     print(f"Launching server on port: {server_port}")
+    
+    # Close PyInstaller splash screen if it exists
+    try:
+        import pyi_splash
+        pyi_splash.close()
+    except ImportError:
+        pass
+
     demo.launch(
         server_name="127.0.0.1", 
         server_port=server_port, 
         share=False, 
+        inbrowser=True,
         theme=gr.themes.Soft(primary_hue="violet", secondary_hue="indigo"), 
         css=config.CSS_STYLING,
         allowed_paths=get_drives()
