@@ -809,9 +809,21 @@ def get_drives():
 
 if __name__ == "__main__":
     print("Starting AivisSpeech TTS UI App ...")
+    
+    import socket
+    server_port = 7860
+    # Scan for the first free port starting from 7860
+    for port in range(7860, 7900):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            # connect_ex returns 0 if connection was successful (port is in use)
+            if s.connect_ex(('127.0.0.1', port)) != 0:
+                server_port = port
+                break
+                
+    print(f"Launching server on port: {server_port}")
     demo.launch(
         server_name="127.0.0.1", 
-        server_port=7860, 
+        server_port=server_port, 
         share=False, 
         theme=gr.themes.Soft(primary_hue="violet", secondary_hue="indigo"), 
         css=config.CSS_STYLING,
